@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
 var bodyParser = require('body-parser');
+var cors = require('cors')
 
 //Archivo de configuración
 app.use(require('./config/config'));
+
+app.use(cors())
 
 //Configuración de la forma de mostrar los datos para el API
 app.use(express.json());
