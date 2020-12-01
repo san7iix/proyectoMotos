@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 
 //Configuración del archivo de rutas
-// app.use(require('./routes/rutas'));
+app.use(require('./routes/rutas'));
 
 //Inicio del servidor en el puerto para el app
 app.listen(process.env.PORT, () => {
