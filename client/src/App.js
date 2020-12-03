@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from 'react-bootstrap'
+import React, { Component } from 'react';
+import Login from './Componentes/Generales/Login'
+import InicioUsuario from './Componentes/Generales/InicioUsuario'
+import './app.css'
+import BarraSuperior from './Componentes/Generales/BarraSuperior'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import CatalogoBicicletas from './Componentes/Usuarios/CatalogoBicicletas';
+import BicicletaDetalle from './Componentes/Usuarios/CatalogoBicicletas/BicicletaDetalle';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      logueado: true
+    }
+  }
+
+  render() {
+    return (
+
+      <div className="App">
+        <Router>
+          {this.state.logueado ? <BarraSuperior /> : false}
+          <Container className="vh-100" fluid>
+            <Switch>
+              <Route path="/loginUsuarios" exact>
+                <Login />
+              </Route>
+              <Route path="/inicio" exact component={InicioUsuario} />
+              <Route path="/bicicletas/catalogo" exact component={CatalogoBicicletas} />
+              <Route path="/bicicletas/detalle/:id" exact component={BicicletaDetalle} />
+            </Switch>
+          </Container>
+        </Router>
+      </div>
+    );
+
+  }
 }
 
 export default App;

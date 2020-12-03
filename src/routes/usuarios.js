@@ -71,5 +71,24 @@ router.put(`${URI_USUARIOS}/editar`, (req, res) => {
 });
 
 
+router.post(`${URI_USUARIOS}/login`, (req, res)=>{
+    const { email, password } = req.body
+    const query = "SELECT email,password FROM usuario WHERE email = ?"
+
+    mysqlConnection.query(query, [email], (err, rows, fields)=>{
+        if(!err){
+            bcrypt.compare(password,rows[0].password).then((result)=>{
+                res.json({
+                    tipo: 'user',
+                    result: result
+                })
+            })
+            
+        }else{
+            console.log(err)
+        }
+    })
+})
+
 
 module.exports = router;
