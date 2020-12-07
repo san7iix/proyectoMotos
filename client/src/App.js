@@ -11,6 +11,10 @@ import {
 } from "react-router-dom";
 import CatalogoBicicletas from './Componentes/Usuarios/CatalogoBicicletas';
 import BicicletaDetalle from './Componentes/Usuarios/CatalogoBicicletas/BicicletaDetalle';
+import MisReservas from './Componentes/Usuarios/Reservas/MisReservas';
+import UsuarioRutas from './Componentes/Usuarios/Rutas/UsuarioRutas'
+import PerfilUsuario from './Componentes/Usuarios/Perfil/PerfilUsuario';
+import FormReserva from './Componentes/Usuarios/Reservas/FormReserva';
 
 class App extends Component {
 
@@ -18,7 +22,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      logueado: true
+      logueado: localStorage.getItem('logueado')
     }
   }
 
@@ -36,6 +40,10 @@ class App extends Component {
               <Route path="/inicio" exact component={InicioUsuario} />
               <Route path="/bicicletas/catalogo" exact component={CatalogoBicicletas} />
               <Route path="/bicicletas/detalle/:id" exact component={BicicletaDetalle} />
+              <Route path="/reservas" exact component={MisReservas} />
+              <Route path="/usuario/rutas" exact component={UsuarioRutas} />
+              <Route path="/usuario/perfil" exact component={PerfilUsuario} />
+              <Route path="/usuario/reservar/:id" exact component={ FormReserva } />
             </Switch>
           </Container>
         </Router>

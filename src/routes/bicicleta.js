@@ -9,9 +9,9 @@ const URI = '/bicicletas'
 
 //Ruta para crear una bicicleta
 router.post(`${URI}/registro`, (req, res) => {
-    const { modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, imagen } = req.body;
-    const query = `INSERT INTO bicicleta (modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, imagen ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-    mysqlConnection.query(query, [ modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, imagen ], (err, rows, fields) => {
+    const { modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, estado } = req.body;
+    const query = `INSERT INTO bicicleta (modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, estado ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+    mysqlConnection.query(query, [ modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, estado ], (err, rows, fields) => {
         if (!err) {
             res.json({ status: 'Bicicleta agregada' });
         } else {
@@ -43,6 +43,17 @@ router.get(`${URI}`, (req, res) => {
     });
 });
 
+//Ruta para consultar todas las bicicletas disponibles
+router.get(`${URI}/catalogo/disp`, (req, res) => {
+    mysqlConnection.query('SELECT * FROM bicicleta WHERE estado = 0', (err, rows, fields) => {
+        if (!err) {
+            res.json(rows);
+        } else {
+            console.log(err);
+        }
+    });
+});
+
 //Ruta para eliminar una bicicleta
 router.delete(`${URI}/:id`, (req, res) => {
     const { id } = req.params;
@@ -59,7 +70,7 @@ router.delete(`${URI}/:id`, (req, res) => {
 //Hay que editar esto
 router.put(`${URI}/editar`, (req, res) => {
     const { modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, imagen, idbicicleta } = req.body;
-    const query = "UPDATE bicicleta SET modelo = ?, talla = ?, peso = ?, precio = ?, marca = ?, descripcion = ?, tamRueda = ?, tipo_bicicleta = ?, imagen = ? WHERE idbicicleta = ?;";
+    const query = "UPDATE bicicleta SET modelo = ?, talla = ?, peso = ?, precio = ?, marca = ?, descripcion = ?, tamRueda = ?, tipo_bicicleta = ? WHERE idbicicleta = ?;";
     mysqlConnection.query(query, [modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, imagen, idbicicleta], (err, rows, fields) => {
         if (!err) {
             res.json({ status: 'Bicicleta actualizada' });

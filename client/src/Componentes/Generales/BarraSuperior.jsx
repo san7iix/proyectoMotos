@@ -3,19 +3,23 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { withRouter } from "react-router-dom";
+import { Link } from 'react-router-dom'
+
 
 class BarraSuperior extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.setState = {
-            sesionIniciada : false
+            sesionIniciada: false
         }
         this.cerrarSesion = this.cerrarSesion.bind(this)
     }
 
-    cerrarSesion(e){
+    cerrarSesion(e) {
         e.preventDefault()
+        localStorage.removeItem('logueado')
         this.props.history.push("/loginUsuarios")
+        window.location.reload(true);
     }
 
     render() {
@@ -25,19 +29,17 @@ class BarraSuperior extends Component {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link href="/inicio">Inicio</Nav.Link>
-                        <NavDropdown title="Bicicletas" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Mis reservas</NavDropdown.Item>
-                            <NavDropdown.Item href="bicicletas/catalogo">Ver catálogo</NavDropdown.Item>
+                        <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/inicio">Inicio</Link></Nav.Link>
+                        <NavDropdown className="navbar-light navbar-nav nav-link" title="Bicicletas" id="basic-nav-dropdown">
+                            <NavDropdown.Item ><Link className="navbar-light navbar-nav nav-link" to="/reservas">Mis reservas</Link></NavDropdown.Item>
+                            <NavDropdown.Item ><Link className="navbar-light navbar-nav nav-link" to="/bicicletas/catalogo">Ver catálogo</Link></NavDropdown.Item>
                         </NavDropdown>
-                        <NavDropdown title="Rutas" id="basic-nav-dropdown2">
-                            <NavDropdown.Item href="#action/3.1">Mis rutas</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Ver catálogo de rutas</NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/usuario/rutas">Rutas</Link></Nav.Link>
+                        <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/usuario/perfil">Perfil</Link></Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
-                    <Nav.Link onClick={event=>this.cerrarSesion(event)}>Cerrar sesión</Nav.Link>
+                    <Nav.Link onClick={event => this.cerrarSesion(event)}>Cerrar sesión</Nav.Link>
                 </Navbar.Collapse>
             </Navbar>
         );

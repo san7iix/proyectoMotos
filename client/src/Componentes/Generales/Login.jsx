@@ -15,7 +15,6 @@ class Login extends Component {
             email: '',
             password: ''
         }
-
         this.loguear = this.loguear.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
@@ -25,7 +24,11 @@ class Login extends Component {
         UsuarioAPI.loguear(this.state)
         .then((data)=>{
             if(data.result){
+                console.log(data)
+                localStorage.setItem('id_user_rutas', this.state.email)
+                localStorage.setItem('logueado', data.result)
                 this.props.history.push('/inicio');
+                window.location.reload(true);
             }
         })
     }

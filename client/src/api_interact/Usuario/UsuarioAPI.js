@@ -27,9 +27,9 @@ class UsuarioAPI {
         }
     }
 
-    async obtenerCatalogoBicicletas(){
+    async obtenerCatalogoBicicletas() {
         try {
-            const res = await fetch(`${config.API_URL}bicicletas/`, {
+            const res = await fetch(`${config.API_URL}bicicletas/catalogo/disp`, {
                 method: 'GET'
             })
             const data = await res.json()
@@ -38,14 +38,75 @@ class UsuarioAPI {
             console.log(error)
         }
     }
-    
-    async obtenerDetalleBicicleta(id){
+
+    async obtenerDetalleBicicleta(id) {
         try {
             const res = await fetch(`${config.API_URL}bicicletas/${id}`, {
                 method: 'GET'
             })
             const data = await res.json()
             return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async obtenerReservas(email) {
+        try {
+            const res = await fetch(`${config.API_URL}usuarios/reservas/${email}`, {
+                method: 'GET'
+            })
+            const data = await res.json()
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async obtenerRutas() {
+        try {
+            const res = await fetch(`${config.API_URL}usuarios/rutas/all`, {
+                method: 'GET'
+            })
+            const data = await res.json()
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async obtenerDatosUsuario(email){
+        try {
+            const res = await fetch(`${config.API_URL}usuarios/${email}`, {
+                method: 'GET'
+            })
+            const data = await res.json()
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async reservarBicicleta(data){
+        try {
+            const res = await (`${config.API_URL}usuarios/reservar`,{
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            const data = await res.json()
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async obtenerIdUsuario(email){
+        try {
+            const res = await (`${config.API_URL}/usuarios/buscarId/${email}`,{
+                method: 'GET',
+            })
+            const data = await res.json()
+            console.log( data)
         } catch (error) {
             console.log(error)
         }

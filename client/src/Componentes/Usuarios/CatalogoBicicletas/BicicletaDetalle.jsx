@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import Media from 'react-bootstrap/Media'
 import UsuarioAPI from '../../../api_interact/Usuario/UsuarioAPI'
 import Button from 'react-bootstrap/Button'
+import { Link } from 'react-router-dom';
 
 class BicicletaDetalle extends Component {
 
@@ -23,7 +24,6 @@ class BicicletaDetalle extends Component {
                 this.setState({
                     data: data
                 })
-                console.log(this.state.data)
             })
             .catch(err => {
                 console.log(err)
@@ -42,7 +42,7 @@ class BicicletaDetalle extends Component {
                         width={600}
                         height={600}
                         className="mr-3"
-                        src={ this.state.data.imagen }
+                        // src={ this.state.data.imagen }
                         alt="imagen bicicleta"
                     />
                     <Media.Body className="mt-3">
@@ -53,7 +53,7 @@ class BicicletaDetalle extends Component {
                         <p>{`Tamaño de la rueda: ${this.state.data.tamRueda}`}</p>
                         <p>{this.state.data.descripcion}</p>
                         <p>{`Precio: $${this.state.data.precio} COP`}</p>
-                        <Button variant="primary">Reservar</Button>
+                        {this.state.data.estado === 0 ? <Link to={`/usuario/reservar/${this.state.id}`}><Button variant="primary">Reservar</Button></Link> : false}                        
                     </Media.Body>
                 </Media>
             </Container>

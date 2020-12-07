@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `bikedb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `bikedb`;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bikedb
@@ -16,6 +18,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `administradores`
+--
+
+DROP TABLE IF EXISTS `administradores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `administradores` (
+  `idadministradores` int NOT NULL AUTO_INCREMENT,
+  `usuario` varchar(45) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`idadministradores`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `administradores`
+--
+
+LOCK TABLES `administradores` WRITE;
+/*!40000 ALTER TABLE `administradores` DISABLE KEYS */;
+/*!40000 ALTER TABLE `administradores` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `bicicleta`
 --
 
@@ -31,15 +57,12 @@ CREATE TABLE `bicicleta` (
   `marca` varchar(45) NOT NULL,
   `descripcion` text NOT NULL,
   `tamRueda` float NOT NULL,
-  `bicicletacol` varchar(45) NOT NULL,
   `tipo_bicicleta` int NOT NULL,
-  `imagen` int NOT NULL,
+  `estado` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`idbicicleta`),
   KEY `fk_bicicleta_tipoBicicleta_idx` (`tipo_bicicleta`),
-  KEY `fk_bicicleta_imagenesBicicleta1_idx` (`imagen`),
-  CONSTRAINT `fk_bicicleta_imagenesBicicleta1` FOREIGN KEY (`imagen`) REFERENCES `imagenesbicicleta` (`idimagenesBicicleta`),
   CONSTRAINT `fk_bicicleta_tipoBicicleta` FOREIGN KEY (`tipo_bicicleta`) REFERENCES `tipobicicleta` (`idtipoBicicleta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,6 +71,7 @@ CREATE TABLE `bicicleta` (
 
 LOCK TABLES `bicicleta` WRITE;
 /*!40000 ALTER TABLE `bicicleta` DISABLE KEYS */;
+INSERT INTO `bicicleta` VALUES (11,'2010','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0),(12,'2012','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0),(13,'2012','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0),(14,'2012','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0);
 /*!40000 ALTER TABLE `bicicleta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +86,10 @@ CREATE TABLE `imagenesbicicleta` (
   `idimagenesBicicleta` int NOT NULL AUTO_INCREMENT,
   `rutaImagen` varchar(255) DEFAULT NULL,
   `descripcion` text,
-  PRIMARY KEY (`idimagenesBicicleta`)
+  `bicicleta_idbicicleta` int NOT NULL,
+  PRIMARY KEY (`idimagenesBicicleta`),
+  KEY `fk_imagenesbicicleta_bicicleta1_idx` (`bicicleta_idbicicleta`),
+  CONSTRAINT `fk_imagenesbicicleta_bicicleta1` FOREIGN KEY (`bicicleta_idbicicleta`) REFERENCES `bicicleta` (`idbicicleta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,21 +110,20 @@ DROP TABLE IF EXISTS `reservabici`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservabici` (
-  `idreservaBici` int NOT NULL,
-  `idBicicleta` int NOT NULL,
-  `fecha` date NOT NULL,
+  `idreservaBici` int NOT NULL AUTO_INCREMENT,
+  `fecha` date NOT NULL DEFAULT (curdate()),
   `horasContratadas` int NOT NULL,
-  `horaEntrega` time NOT NULL,
-  `horaDevolucion` time NOT NULL,
-  `estado` varchar(1) NOT NULL,
-  `bicicleta_idbicicleta` int NOT NULL,
+  `horaEntrega` time NOT NULL DEFAULT (curtime()),
+  `horaDevolucion` time DEFAULT NULL,
+  `estado` varchar(1) NOT NULL DEFAULT 'A',
+  `idbicicleta` int NOT NULL,
   `usuario_identificacion` int NOT NULL,
   PRIMARY KEY (`idreservaBici`),
-  KEY `fk_reservaBici_bicicleta1_idx` (`bicicleta_idbicicleta`),
+  KEY `fk_reservaBici_bicicleta1_idx` (`idbicicleta`),
   KEY `fk_reservaBici_usuario1_idx` (`usuario_identificacion`),
-  CONSTRAINT `fk_reservaBici_bicicleta1` FOREIGN KEY (`bicicleta_idbicicleta`) REFERENCES `bicicleta` (`idbicicleta`),
+  CONSTRAINT `fk_reservaBici_bicicleta1` FOREIGN KEY (`idbicicleta`) REFERENCES `bicicleta` (`idbicicleta`),
   CONSTRAINT `fk_reservaBici_usuario1` FOREIGN KEY (`usuario_identificacion`) REFERENCES `usuario` (`identificacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,11 +150,8 @@ CREATE TABLE `ruta` (
   `tiempoEstimado` int NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
-  `usuario_identificacion` int NOT NULL,
-  PRIMARY KEY (`idruta`),
-  KEY `fk_ruta_usuario1_idx` (`usuario_identificacion`),
-  CONSTRAINT `fk_ruta_usuario1` FOREIGN KEY (`usuario_identificacion`) REFERENCES `usuario` (`identificacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`idruta`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,6 +160,7 @@ CREATE TABLE `ruta` (
 
 LOCK TABLES `ruta` WRITE;
 /*!40000 ALTER TABLE `ruta` DISABLE KEYS */;
+INSERT INTO `ruta` VALUES (5,'Ziruma','La playa','Lorem ipsum',10,'2020-04-12','15:19:00'),(6,'Ziruma2','La playa2','is simply dummy text of the printing and typesetting industry.',10,'2020-04-12','15:19:00');
 /*!40000 ALTER TABLE `ruta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,11 +172,11 @@ DROP TABLE IF EXISTS `tipobicicleta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipobicicleta` (
-  `idtipoBicicleta` int NOT NULL,
+  `idtipoBicicleta` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`idtipoBicicleta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,6 +185,7 @@ CREATE TABLE `tipobicicleta` (
 
 LOCK TABLES `tipobicicleta` WRITE;
 /*!40000 ALTER TABLE `tipobicicleta` DISABLE KEYS */;
+INSERT INTO `tipobicicleta` VALUES (2,'Tipo1','Este es un tipo random de bicicleta');
 /*!40000 ALTER TABLE `tipobicicleta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +215,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (2,'Santiago2','Martinez2','xsantysxx@gmail.com3','1234','Calle 44B2 ',123242,NULL);
+INSERT INTO `usuario` VALUES (2,'Jose','De la Valle','demo@user.com','$2a$10$WdFRm62v3F79bO3ewoFB5OaNqDhSu.Xp.EYriII/0I5dlapqZUGjO','Calle 44B ',12324,'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -203,4 +228,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-01 10:56:50
+-- Dump completed on 2020-12-07  8:37:52

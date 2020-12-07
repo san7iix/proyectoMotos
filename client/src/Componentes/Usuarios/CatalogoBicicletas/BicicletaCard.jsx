@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
+import { Link } from 'react-router-dom'
+
 
 class BicicletaCard extends Component {
 
@@ -21,7 +23,7 @@ class BicicletaCard extends Component {
                 <Card.Body>
                     <Card.Title>{this.state.nombre}</Card.Title>
                     <Card.Text>{this.state.descripcion}</Card.Text>
-                    <Button href={`detalle/${this.state.id}`}>Ver más</Button>
+                    <Link to={`detalle/${this.state.id}`}><Button >Ver más</Button></Link>
                 </Card.Body>
             </Card>
         );
