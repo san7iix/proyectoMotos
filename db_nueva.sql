@@ -18,30 +18,6 @@ USE `bikedb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `administradores`
---
-
-DROP TABLE IF EXISTS `administradores`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `administradores` (
-  `idadministradores` int NOT NULL AUTO_INCREMENT,
-  `usuario` varchar(45) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`idadministradores`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `administradores`
---
-
-LOCK TABLES `administradores` WRITE;
-/*!40000 ALTER TABLE `administradores` DISABLE KEYS */;
-/*!40000 ALTER TABLE `administradores` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `bicicleta`
 --
 
@@ -71,7 +47,6 @@ CREATE TABLE `bicicleta` (
 
 LOCK TABLES `bicicleta` WRITE;
 /*!40000 ALTER TABLE `bicicleta` DISABLE KEYS */;
-INSERT INTO `bicicleta` VALUES (11,'2010','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0),(12,'2012','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0),(13,'2012','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0),(14,'2012','S',10,10000,'patico','Esto es una descripcion random de la bicicleta en cuestión',10,2,0);
 /*!40000 ALTER TABLE `bicicleta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,12 +93,8 @@ CREATE TABLE `reservabici` (
   `estado` varchar(1) NOT NULL DEFAULT 'A',
   `idbicicleta` int NOT NULL,
   `usuario_identificacion` int NOT NULL,
-  PRIMARY KEY (`idreservaBici`),
-  KEY `fk_reservaBici_bicicleta1_idx` (`idbicicleta`),
-  KEY `fk_reservaBici_usuario1_idx` (`usuario_identificacion`),
-  CONSTRAINT `fk_reservaBici_bicicleta1` FOREIGN KEY (`idbicicleta`) REFERENCES `bicicleta` (`idbicicleta`),
-  CONSTRAINT `fk_reservaBici_usuario1` FOREIGN KEY (`usuario_identificacion`) REFERENCES `usuario` (`identificacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`idreservaBici`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +122,7 @@ CREATE TABLE `ruta` (
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
   PRIMARY KEY (`idruta`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +131,7 @@ CREATE TABLE `ruta` (
 
 LOCK TABLES `ruta` WRITE;
 /*!40000 ALTER TABLE `ruta` DISABLE KEYS */;
-INSERT INTO `ruta` VALUES (5,'Ziruma','La playa','Lorem ipsum',10,'2020-04-12','15:19:00'),(6,'Ziruma2','La playa2','is simply dummy text of the printing and typesetting industry.',10,'2020-04-12','15:19:00');
+INSERT INTO `ruta` VALUES (7,'Beatae ea esse qui p','Nesciunt et qui qui','Est error nemo aut d',7,'1991-06-15','19:11:00'),(8,'Magna nesciunt duis','Corporis elit ipsa','Ea consequat Cum ve',2,'2008-07-09','19:04:00'),(9,'Pariatur Fugiat ac','Tempora suscipit tem','Et et quos illum eo',12,'2009-12-08','08:45:00'),(10,'Pariatur Fugiat ac','Tempora suscipit tem','Et et quos illum eo',12,'2009-12-08','08:45:00'),(11,'Autem sint quis ut r','Et obcaecati magni n','Quia quae est error',11,'2016-11-10','02:50:00'),(12,'Voluptatem qui labo','Sed laborum Ipsa e','Beatae eos quos err',12,'2009-08-03','03:15:00'),(13,'Voluptatem qui labo','Sed laborum Ipsa e','Beatae eos quos err',12,'2009-08-03','03:15:00'),(14,'Deserunt ipsa exerc','Qui eos voluptate un','Qui laboris obcaecat',12,'2007-03-27','22:11:00');
 /*!40000 ALTER TABLE `ruta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +147,7 @@ CREATE TABLE `tipobicicleta` (
   `nombre` varchar(45) NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`idtipoBicicleta`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +156,6 @@ CREATE TABLE `tipobicicleta` (
 
 LOCK TABLES `tipobicicleta` WRITE;
 /*!40000 ALTER TABLE `tipobicicleta` DISABLE KEYS */;
-INSERT INTO `tipobicicleta` VALUES (2,'Tipo1','Este es un tipo random de bicicleta');
 /*!40000 ALTER TABLE `tipobicicleta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +167,7 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
-  `identificacion` int NOT NULL,
+  `identificacion` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `apellido` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -205,8 +175,9 @@ CREATE TABLE `usuario` (
   `direccion` varchar(255) NOT NULL,
   `telefono` int DEFAULT NULL,
   `imagen` varchar(255) DEFAULT NULL,
+  `rol` int DEFAULT '0',
   PRIMARY KEY (`identificacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +186,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (2,'Jose','De la Valle','demo@user.com','$2a$10$WdFRm62v3F79bO3ewoFB5OaNqDhSu.Xp.EYriII/0I5dlapqZUGjO','Calle 44B ',12324,'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg');
+INSERT INTO `usuario` VALUES (2,'Jose','De La Valle','demo@user.com','$2a$10$jVLLrNjWm3SuNJeX5gEWQeIoYnr5fv3XZUkyM9RaLWcT3Tl/elpAS','Calle 44B ',12324,NULL,0),(3,'Admi','Nistrador','admin1@user.com','$2a$10$4F0eBTH0.NlVadyCQiw9euNKPv3uhsS8bbu67/cCiC/7qM2L1seYW','Calle 44B ',12324,NULL,1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -228,4 +199,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-07  8:37:52
+-- Dump completed on 2020-12-10 21:46:43
