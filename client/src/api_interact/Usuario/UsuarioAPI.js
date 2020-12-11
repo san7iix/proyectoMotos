@@ -51,9 +51,9 @@ class UsuarioAPI {
         }
     }
 
-    async obtenerReservas(email) {
+    async obtenerReservas(id) {
         try {
-            const res = await fetch(`${config.API_URL}usuarios/reservas/${email}`, {
+            const res = await fetch(`${config.API_URL}usuarios/reservas/${id}`, {
                 method: 'GET'
             })
             const data = await res.json()
@@ -75,9 +75,9 @@ class UsuarioAPI {
         }
     }
 
-    async obtenerDatosUsuario(email){
+    async obtenerDatosUsuario(id) {
         try {
-            const res = await fetch(`${config.API_URL}usuarios/${email}`, {
+            const res = await fetch(`${config.API_URL}usuarios/${id}`, {
                 method: 'GET'
             })
             const data = await res.json()
@@ -87,29 +87,23 @@ class UsuarioAPI {
         }
     }
 
-    async reservarBicicleta(data){
-        try {
-            const res = await (`${config.API_URL}usuarios/reservar`,{
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            const data = await res.json()
-            return data
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async obtenerIdUsuario(email){
-        try {
-            const res = await (`${config.API_URL}/usuarios/buscarId/${email}`,{
-                method: 'GET',
-            })
-            const data = await res.json()
-            console.log( data)
-        } catch (error) {
-            console.log(error)
-        }
+    async reservarBicicleta(data) {
+        const respuesta = await fetch(`${config.API_URL}usuarios/reservar`, {
+            method: 'POST',
+            body: JSON.stringify({
+                "horasContratadas": data.horasContratadas,
+                "idbicicleta": data.idbicicleta,
+                "usuario_identificacion": data.usuario_identificacion
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+            }
+        })
+        const dato = await respuesta.json()
+        return dato
     }
 
 }

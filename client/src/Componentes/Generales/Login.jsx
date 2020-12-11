@@ -22,15 +22,14 @@ class Login extends Component {
 
     loguear() {
         UsuarioAPI.loguear(this.state)
-        .then((data)=>{
-            if(data.result){
-                console.log(data)
-                localStorage.setItem('id_user_rutas', this.state.email)
-                localStorage.setItem('logueado', data.result)
-                this.props.history.push('/inicio');
-                window.location.reload(true);
-            }
-        })
+            .then((data) => {
+                if (data.result) {
+                    localStorage.setItem('id_user_rutas', data.identificacion)
+                    localStorage.setItem('is_ad_min', data.tipo)
+                    localStorage.setItem('logueado', data.result)
+                    window.location.reload(true);
+                }
+            })
     }
 
 

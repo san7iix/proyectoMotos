@@ -9,9 +9,9 @@ const URI_USUARIOS = '/usuarios'
 
 //Ruta para crear un usuario
 router.post(`${URI_USUARIOS}/registro`, (req, res) => {
-    const { identificacion, nombre, apellido, email, password, direccion, telefono, imagen } = req.body;
-    const query = `INSERT INTO usuario (identificacion, nombre, apellido, email, password, direccion, telefono, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`
-    mysqlConnection.query(query, [ identificacion, nombre, apellido, email, bcrypt.hashSync(password, 10), direccion, telefono, imagen ], (err, rows, fields) => {
+    const { nombre, apellido, email, password, direccion, telefono, imagen, rol} = req.body;
+    const query = `INSERT INTO usuario (nombre, apellido, email, password, direccion, telefono, imagen, rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`
+    mysqlConnection.query(query, [ nombre, apellido, email, bcrypt.hashSync(password, 10), direccion, telefono, imagen, rol ], (err, rows, fields) => {
         if (!err) {
             res.json({ status: 'Usuario creado' })
         } else {
@@ -23,7 +23,7 @@ router.post(`${URI_USUARIOS}/registro`, (req, res) => {
 //Ruta para consultar un usuario
 router.get(`${URI_USUARIOS}/:idUsuario`, (req, res) => {
     const { idUsuario } = req.params
-    mysqlConnection.query('SELECT * FROM usuario WHERE email = ?;', [idUsuario], (err, rows, fields) => {
+    mysqlConnection.query('SELECT * FROM usuario WHERE identificacion = ?;', [idUsuario], (err, rows, fields) => {
         if (!err) {
             res.json(rows[0])
         } else {
@@ -33,9 +33,10 @@ router.get(`${URI_USUARIOS}/:idUsuario`, (req, res) => {
 });
 
 //Ruta para consultar un id de usuario
-router.get(`${URI_USUARIOS}/buscarId/:email`, (req, res) => {
+router.get(`${URI_USUARIOS}/buscar/:email`, (req, res) => {
     const { email } = req.params
-    mysqlConnection.query('SELECT identificacion FROM usuario WHERE email = ?;', [email], (err, rows, fields) => {
+
+    mysqlConnection.query('SELECT identificacion FROM usuario WHERE email = ?', [email], (err, rows, fields) => {
         if (!err) {
             res.json(rows[0])
         } else {
@@ -85,14 +86,15 @@ router.put(`${URI_USUARIOS}/editar`, (req, res) => {
 //ruta para hacer login
 router.post(`${URI_USUARIOS}/login`, (req, res)=>{
     const { email, password } = req.body
-    const query = "SELECT email,password FROM usuario WHERE email = ?"
+    const query = "SELECT rol,identificacion,email,password FROM usuario WHERE email = ?"
 
     mysqlConnection.query(query, [email], (err, rows, fields)=>{
         if(!err){
             bcrypt.compare(password,rows[0].password).then((result)=>{
                 res.json({
-                    tipo: 'user',
-                    result: result
+                    tipo: rows[0].rol,
+                    result: result,
+                    identificacion: rows[0].identificacion
                 })
             })
             
@@ -103,9 +105,9 @@ router.post(`${URI_USUARIOS}/login`, (req, res)=>{
 })
 
 //Ruta para consultar una reserva
-router.get(`${URI_USUARIOS}/reservas/:email`, (req, res) => {
-    const { email } = req.params
-    mysqlConnection.query('SELECT idreservaBici, fecha, horasContratadas, horaEntrega, horaDevolucion, estado, idbicicleta from reservabici as rb INNER JOIN usuario as u ON rb.usuario_identificacion = u.identificacion WHERE email = ?', [email], (err, rows, fields) => {
+router.get(`${URI_USUARIOS}/reservas/:id`, (req, res) => {
+    const { id } = req.params
+    mysqlConnection.query('SELECT idreservaBici, fecha, horasContratadas, horaEntrega, horaDevolucion, estado, idbicicleta from reservabici as rb INNER JOIN usuario as u ON rb.usuario_identificacion = u.identificacion WHERE identificacion = ?', [id], (err, rows, fields) => {
         if (!err) {
             res.json(rows)
         } else {
@@ -137,7 +139,7 @@ router.post(`${URI_USUARIOS}/reservar`, (req, res) => {
     })
     mysqlConnection.query(query, [ horasContratadas, idbicicleta, usuario_identificacion ], (err, rows, fields) => {
         if (!err) {
-            res.json({ status: 'Reserva agregada' });
+            res.json({ status: true, message: 'Reserva agregada' });
         } else {
             console.log(err);
         }

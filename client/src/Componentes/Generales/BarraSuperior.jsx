@@ -9,8 +9,9 @@ import { Link } from 'react-router-dom'
 class BarraSuperior extends Component {
     constructor(props) {
         super(props)
-        this.setState = {
-            sesionIniciada: false
+        this.state = {
+            sesionIniciada: false,
+            isAdmin: localStorage.getItem('is_ad_min')
         }
         this.cerrarSesion = this.cerrarSesion.bind(this)
     }
@@ -18,7 +19,8 @@ class BarraSuperior extends Component {
     cerrarSesion(e) {
         e.preventDefault()
         localStorage.removeItem('logueado')
-        this.props.history.push("/loginUsuarios")
+        localStorage.removeItem('is_ad_min')
+        this.props.history.push("/")
         window.location.reload(true);
     }
 
@@ -28,13 +30,15 @@ class BarraSuperior extends Component {
                 <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
+                
                     <Nav className="mr-auto">
-                        <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/inicio">Inicio</Link></Nav.Link>
-                        <NavDropdown className="navbar-light navbar-nav nav-link" title="Bicicletas" id="basic-nav-dropdown">
+                    { this.state.isAdmin === "0" ? <NavDropdown className="navbar-light navbar-nav nav-link" title="Bicicletas" id="basic-nav-dropdown">
                             <NavDropdown.Item ><Link className="navbar-light navbar-nav nav-link" to="/reservas">Mis reservas</Link></NavDropdown.Item>
                             <NavDropdown.Item ><Link className="navbar-light navbar-nav nav-link" to="/bicicletas/catalogo">Ver catálogo</Link></NavDropdown.Item>
-                        </NavDropdown>
-                        <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/usuario/rutas">Rutas</Link></Nav.Link>
+                        </NavDropdown> : false}
+                    { this.state.isAdmin === "1" ? <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/administrador/inicio">Inicio</Link></Nav.Link> : false}
+                    { this.state.isAdmin === "1" ? <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/administrador/rutas">Rutas</Link></Nav.Link> : false}
+                    { this.state.isAdmin === "0" ? <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/usuario/rutas">Rutas</Link></Nav.Link> : false }
                         <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/usuario/perfil">Perfil</Link></Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
