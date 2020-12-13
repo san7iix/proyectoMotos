@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Col, Row } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table'
 import AdministradorAPI from '../../../api_interact/Administrador/AdministradorAPI';
+import { Button } from 'react-bootstrap'
 
 class TablaRutas extends Component {
 
@@ -32,6 +33,19 @@ class TablaRutas extends Component {
         this.getRutas()
     }
 
+
+    eliminarRutas(id){
+        AdministradorAPI.eliminarRuta(id)
+        .then(res=>{
+            if(res){
+                this.getRutas()
+            }
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+
     render() {
         return (
             <Container>
@@ -47,6 +61,7 @@ class TablaRutas extends Component {
                                     <th>Tiempo estimado (horas)</th>
                                     <th>Fecha</th>
                                     <th>Hora</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,6 +75,16 @@ class TablaRutas extends Component {
                                             <td> {ruta.tiempoEstimado} </td>
                                             <td> {ruta.fecha} </td>
                                             <td> {ruta.hora} </td>
+                                            <td>
+                                                <Row>
+                                                    <Col className="m-1">
+                                                        <Button>Editar</Button>
+                                                    </Col>
+                                                    <Col className="m-1">
+                                                        <Button variant="danger" onClick={()=>this.eliminarRutas(ruta.idruta)} >Eliminar</Button>
+                                                    </Col>
+                                                </Row>
+                                            </td>
                                         </tr>
                                     ))
                                 }

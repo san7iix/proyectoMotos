@@ -34,6 +34,18 @@ class AdministradorAPI {
 
     }
 
+    async eliminarRuta(id){
+        try {
+            const res = await fetch(`${config.API_URL}rutas/${id}`, {
+                method: 'DELETE'
+            })
+            const data = await res.json()
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
 }
 

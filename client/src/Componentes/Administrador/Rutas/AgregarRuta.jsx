@@ -8,7 +8,6 @@ import { withRouter } from "react-router-dom";
 
 
 
-
 class AgregarRuta extends Component {
 
     constructor(props){
@@ -30,7 +29,9 @@ class AgregarRuta extends Component {
     agregarRuta(){
         AdministradorAPI.agregarRuta(this.state)
         .then(data=>{
-            this.props.history.push("/administrador/rutas")
+            if(data){
+                window.location.reload(true);
+            }
         })
         .catch(err=>{
             console.log(err)

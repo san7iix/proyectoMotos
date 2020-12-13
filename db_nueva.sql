@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `bikedb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `bikedb`;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bikedb
@@ -122,7 +120,7 @@ CREATE TABLE `ruta` (
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
   PRIMARY KEY (`idruta`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +129,7 @@ CREATE TABLE `ruta` (
 
 LOCK TABLES `ruta` WRITE;
 /*!40000 ALTER TABLE `ruta` DISABLE KEYS */;
-INSERT INTO `ruta` VALUES (7,'Beatae ea esse qui p','Nesciunt et qui qui','Est error nemo aut d',7,'1991-06-15','19:11:00'),(8,'Magna nesciunt duis','Corporis elit ipsa','Ea consequat Cum ve',2,'2008-07-09','19:04:00'),(9,'Pariatur Fugiat ac','Tempora suscipit tem','Et et quos illum eo',12,'2009-12-08','08:45:00'),(10,'Pariatur Fugiat ac','Tempora suscipit tem','Et et quos illum eo',12,'2009-12-08','08:45:00'),(11,'Autem sint quis ut r','Et obcaecati magni n','Quia quae est error',11,'2016-11-10','02:50:00'),(12,'Voluptatem qui labo','Sed laborum Ipsa e','Beatae eos quos err',12,'2009-08-03','03:15:00'),(13,'Voluptatem qui labo','Sed laborum Ipsa e','Beatae eos quos err',12,'2009-08-03','03:15:00'),(14,'Deserunt ipsa exerc','Qui eos voluptate un','Qui laboris obcaecat',12,'2007-03-27','22:11:00');
+INSERT INTO `ruta` VALUES (26,'Id reprehenderit f','Praesentium ullam ut','Maiores reiciendis e',11,'1979-01-02','00:58:00'),(28,'Aut rerum quis et re','Animi dolore ex eum','Sed dignissimos dolo',4,'2013-11-10','19:11:00'),(29,'Distinctio Quidem n','Excepturi Nam qui so','Voluptatibus nihil e',5,'1986-09-01','04:05:00');
 /*!40000 ALTER TABLE `ruta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,4 +197,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-10 21:46:43
+-- Dump completed on 2020-12-13 10:24:47

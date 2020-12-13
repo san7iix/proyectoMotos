@@ -8,7 +8,7 @@ class VistaRutas extends Component {
         return (
             <Container fluid>
                 <Row>
-                    <Col>
+                    <Col xs={3}>
                         <AgregarRuta />
                     </Col>
                     <Col>
