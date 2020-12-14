@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import UsuarioAPI from '../../api_interact/Usuario/UsuarioAPI'
 import { withRouter } from "react-router-dom";
+import {Link} from 'react-router-dom'
 
 
 class Login extends Component {
@@ -13,7 +14,8 @@ class Login extends Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            mensaje: ''
         }
         this.loguear = this.loguear.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -21,6 +23,12 @@ class Login extends Component {
 
 
     loguear() {
+        if(this.state.email === '' || this.state.password ===''){
+            this.setState({
+                mensaje: 'Los campos no pueden ser vacíos'
+            })
+            return
+        }
         UsuarioAPI.loguear(this.state)
             .then((data) => {
                 if (data.result) {
@@ -28,6 +36,10 @@ class Login extends Component {
                     localStorage.setItem('is_ad_min', data.tipo)
                     localStorage.setItem('logueado', data.result)
                     window.location.reload(true);
+                }else{
+                    this.setState({
+                        mensaje: 'Los datos ingresados son incorrectos'
+                    })
                 }
             })
     }
@@ -61,9 +73,11 @@ class Login extends Component {
                                     <Form.Label>Contraseña</Form.Label>
                                     <Form.Control type="password" placeholder="Contraseña" name="password" onChange={this.handleChange} />
                                 </Form.Group>
+                                <p>{this.state.mensaje}</p>
                                 <Button variant="primary" onClick={this.loguear}>
                                     Entrar
                                     </Button>
+                                    <Link to="/registro">Registrarme</Link>
                             </Form>
                         </Card.Body>
                     </Card>

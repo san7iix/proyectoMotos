@@ -38,6 +38,7 @@ class BarraSuperior extends Component {
                         </NavDropdown> : false}
                     { this.state.isAdmin === "1" ? <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/administrador/inicio">Inicio</Link></Nav.Link> : false}
                     { this.state.isAdmin === "1" ? <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/administrador/rutas">Rutas</Link></Nav.Link> : false}
+                    { this.state.isAdmin === "1" ? <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/administrador/bicicletas">Bicicletas</Link></Nav.Link> : false}
                     { this.state.isAdmin === "0" ? <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/usuario/rutas">Rutas</Link></Nav.Link> : false }
                         <Nav.Link><Link className="navbar-light navbar-nav nav-link" to="/usuario/perfil">Perfil</Link></Nav.Link>
                     </Nav>

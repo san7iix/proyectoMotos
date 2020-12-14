@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UsuarioAPI from '../../../api_interact/Usuario/UsuarioAPI';
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table'
 import {Link} from 'react-router-dom'
 class MisReservas extends Component {
@@ -13,6 +13,9 @@ class MisReservas extends Component {
             email: localStorage.getItem('id_user_rutas'),
             reservas: []
         }
+
+        this.getReservas = this.getReservas.bind(this)
+        this.devolver = this.devolver.bind(this)
     }
 
     getReservas() {
@@ -22,6 +25,24 @@ class MisReservas extends Component {
                     reservas : data
                 })
             })
+    }
+
+    devolver(id, idbicicleta){
+        let data = {
+            id: id,
+            idbicicleta: idbicicleta
+        }
+
+        UsuarioAPI.devolverBicicleta(data)
+        .then(res=>{
+            if(res.status){
+                alert(res.message)
+                window.location.reload(true)
+            }
+        })
+        .catch(err=>{
+            console.log(err)
+        })
     }
 
     componentDidMount() {
@@ -42,6 +63,7 @@ class MisReservas extends Component {
                                     <th>Hora de devolución</th>
                                     <th>Estado</th>
                                     <th>Bicicleta</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,6 +77,9 @@ class MisReservas extends Component {
                                             <td>{reserva.horaDevolucion}</td>
                                             <td>{reserva.estado}</td>
                                             <td><Link to={`bicicletas/detalle/${reserva.idbicicleta}`}>Ver bicicleta</Link></td>
+                                            <td>
+                                                { reserva.estado === 'A' ? <Button onClick={()=>this.devolver(reserva.idreservaBici,reserva.idbicicleta)} >Devolver</Button> : false }
+                                            </td>
                                         </tr>
                                     ))
                                 }

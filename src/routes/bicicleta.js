@@ -11,9 +11,12 @@ const URI = '/bicicletas'
 router.post(`${URI}/registro`, (req, res) => {
     const { modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, estado } = req.body;
     const query = `INSERT INTO bicicleta (modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, estado ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-    mysqlConnection.query(query, [ modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, estado ], (err, rows, fields) => {
+    mysqlConnection.query(query, [modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, estado], (err, rows, fields) => {
         if (!err) {
-            res.json({ status: 'Bicicleta agregada' });
+            res.json({
+                message: 'Bicicleta agregada',
+                status: true
+            });
         } else {
             console.log(err);
         }
@@ -59,7 +62,10 @@ router.delete(`${URI}/:id`, (req, res) => {
     const { id } = req.params;
     mysqlConnection.query('DELETE FROM bicicleta WHERE (`idbicicleta` = ?);', [id], (err, rows, fields) => {
         if (!err) {
-            res.json({ status: 'Bicicleta eliminada' });
+            res.json({
+                message: 'Bicicleta eliminada',
+                status: true
+            });
         } else {
             console.log(err);
         }
@@ -67,7 +73,6 @@ router.delete(`${URI}/:id`, (req, res) => {
 });
 
 //Ruta para editar una bicicleta
-//Hay que editar esto
 router.put(`${URI}/editar`, (req, res) => {
     const { modelo, talla, peso, precio, marca, descripcion, tamRueda, tipo_bicicleta, imagen, idbicicleta } = req.body;
     const query = "UPDATE bicicleta SET modelo = ?, talla = ?, peso = ?, precio = ?, marca = ?, descripcion = ?, tamRueda = ?, tipo_bicicleta = ? WHERE idbicicleta = ?;";
@@ -80,6 +85,54 @@ router.put(`${URI}/editar`, (req, res) => {
     });
 });
 
+//Ruta para consultar las imágenes de una bicicleta
+
+router.post(`${URI}/imagenes/ver`, (req, res) => {
+    const { idbicicleta } = req.body
+
+    const query = `SELECT rutaimagen FROM bicicleta INNER JOIN imagenesbicicleta ON bicicleta.idbicicleta = imagenesbicicleta.bicicleta_idbicicleta WHERE idbicicleta = ?;`
+
+    mysqlConnection.query(query, [idbicicleta], (err, rows, fields) => {
+        if (!err) {
+            res.json(rows)
+        } else {
+            console.log(err)
+        }
+    })
+})
+
+router.post(`${URI}/imagenes/unica`, (req, res) => {
+    const { idbicicleta } = req.body
+
+    const query = `SELECT rutaimagen FROM bicicleta INNER JOIN imagenesbicicleta ON bicicleta.idbicicleta = imagenesbicicleta.bicicleta_idbicicleta WHERE idbicicleta = ?;`
+
+    mysqlConnection.query(query, [idbicicleta], (err, rows, fields) => {
+        if (!err) {
+            res.json(rows[0])
+        } else {
+            console.log(err)
+        }
+    })
+})
+
+
+router.post(`${URI}/agregarImagen`, (req, res) => {
+    const { bicicleta_idbicicleta, rutaImagen, descripcion } = req.body
+
+
+    const query = `INSERT INTO imagenesbicicleta (rutaImagen, descripcion, bicicleta_idbicicleta) VALUES (?,?,?);`
+
+    mysqlConnection.query(query, [ rutaImagen, descripcion, bicicleta_idbicicleta], (err, rows, fields) => {
+        if (!err) {
+            res.json({
+                message: 'Imágen agregada',
+                status: true
+            });
+        } else {
+            console.log(err);
+        }
+    });
+})
 
 
 module.exports = router;

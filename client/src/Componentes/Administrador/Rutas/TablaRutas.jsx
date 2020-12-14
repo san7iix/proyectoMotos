@@ -3,6 +3,7 @@ import { Container, Col, Row } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table'
 import AdministradorAPI from '../../../api_interact/Administrador/AdministradorAPI';
 import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 class TablaRutas extends Component {
 
@@ -78,7 +79,7 @@ class TablaRutas extends Component {
                                             <td>
                                                 <Row>
                                                     <Col className="m-1">
-                                                        <Button>Editar</Button>
+                                                        <Link to={`./rutas/editar/${ruta.idruta}`}>Editar</Link>
                                                     </Col>
                                                     <Col className="m-1">
                                                         <Button variant="danger" onClick={()=>this.eliminarRutas(ruta.idruta)} >Eliminar</Button>

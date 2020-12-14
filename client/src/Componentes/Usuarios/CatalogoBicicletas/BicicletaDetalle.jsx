@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Container } from 'react-bootstrap'
+import { Container, Col, Row} from 'react-bootstrap'
 import Media from 'react-bootstrap/Media'
 import UsuarioAPI from '../../../api_interact/Usuario/UsuarioAPI'
 import Button from 'react-bootstrap/Button'
-import { Link } from 'react-router-dom';
+import AwesomeSlider from 'react-awesome-slider';
+import 'react-awesome-slider/dist/styles.css';
 import { withRouter } from "react-router-dom";
 import FormControl from 'react-bootstrap/FormControl'
 
@@ -16,7 +17,8 @@ class BicicletaDetalle extends Component {
             id: this.props.match.params.id,
             usuario_identificacion: localStorage.getItem('id_user_rutas'),
             data: {},
-            horasContratadas: '1'
+            horasContratadas: '1',
+            imagenes: []
         }
 
         this.obtenerDetalleBicicleta = this.obtenerDetalleBicicleta.bind(this)
@@ -62,6 +64,13 @@ class BicicletaDetalle extends Component {
             .catch(err => {
                 console.log(err)
             })
+
+        UsuarioAPI.obtenerImagenesBicicleta(this.state.id).
+            then(res => {
+                this.setState({
+                    imagenes: res
+                })
+            })
     }
 
     componentDidMount() {
@@ -72,13 +81,15 @@ class BicicletaDetalle extends Component {
         return (
             <Container>
                 <Media>
-                    <img
-                        width={600}
-                        height={600}
-                        className="mr-3"
-                        // src={ this.state.data.imagen }
-                        alt="imagen bicicleta"
-                    />
+                    <Col md={8}>
+                        <AwesomeSlider >
+                           {
+                               this.state.imagenes.map(imagen=>(
+                                   <div data-src={imagen.rutaimagen}/>
+                               ))
+                           }
+                        </AwesomeSlider>
+                    </Col>
                     <Media.Body className="mt-3">
                         <h3>{this.state.data.marca}</h3>
                         <p>{`Modelo: ${this.state.data.modelo}`}</p>
@@ -87,6 +98,7 @@ class BicicletaDetalle extends Component {
                         <p>{`Tamaño de la rueda: ${this.state.data.tamRueda}`}</p>
                         <p>{this.state.data.descripcion}</p>
                         <p>{`Precio: $${this.state.data.precio} COP`}</p>
+                        {this.state.data.estado === 0 ? <p>Horas a reservar:</p> : false}
                         {this.state.data.estado === 0 ? <FormControl
                             placeholder="Horas a contratar"
                             aria-label="horasContratadas"

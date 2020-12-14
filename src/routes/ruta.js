@@ -12,7 +12,7 @@ const URI = '/rutas'
 router.post(`${URI}/registro`, (req, res) => {
     const { origen, destino, descripcion, tiempoEstimado, fecha, hora } = req.body;
     const query = `INSERT INTO ruta (origen, destino, descripcion, tiempoEstimado, fecha, hora) VALUES (?, ?, ?, ?, ?, ?);`;
-    mysqlConnection.query(query, [ origen, destino, descripcion, tiempoEstimado, fecha, hora ], (err, rows, fields) => {
+    mysqlConnection.query(query, [origen, destino, descripcion, tiempoEstimado, fecha, hora], (err, rows, fields) => {
         if (!err) {
             res.json({ status: 'Ruta agregada' });
         } else {
@@ -60,10 +60,13 @@ router.delete(`${URI}/:id`, (req, res) => {
 //Ruta para actualizar rutas
 router.put(`${URI}/editar`, (req, res) => {
     const { idruta, origen, destino, descripcion, tiempoEstimado, fecha, hora } = req.body
-    const query2 = "UPDATE origen = ?, destino = ?, descripcion = ?, tiempoEstimado = ?, fecha = ?, hora = ? WHERE idruta = ?;"
+    const query2 = "UPDATE ruta SET origen = ?, destino = ?, descripcion = ?, tiempoEstimado = ?, fecha = ?, hora = ? WHERE idruta = ?;"
     mysqlConnection.query(query2, [origen, destino, descripcion, tiempoEstimado, fecha, hora, idruta], (err, rows, fields) => {
         if (!err) {
-            res.json({ status: 'Ruta actualizada' })
+            res.json({
+                status: true,
+                message: 'Ruta actualizada'
+            })
         } else {
             console.log(err)
         }

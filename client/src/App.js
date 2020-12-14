@@ -18,6 +18,10 @@ import PerfilUsuario from './Componentes/Usuarios/Perfil/PerfilUsuario';
 import FormReserva from './Componentes/Usuarios/Reservas/FormReserva';
 import InicioAdministrador from './Componentes/Administrador/InicioAdministrador';
 import VistaRutas from './Componentes/Administrador/Rutas/VistaRutas';
+import Registro from './Componentes/Generales/Registro';
+import EditarRuta from './Componentes/Administrador/Rutas/EditarRuta';
+import VistaBicicletas from './Componentes/Administrador/Bicicletas/VistaBicicletas';
+import AgregarImagen from './Componentes/Administrador/Bicicletas/AgregarImagen';
 
 class App extends Component {
 
@@ -41,6 +45,9 @@ class App extends Component {
               {/* Rutas para usuarios */}
               <Route exact path="/">
                 {this.state.logueado ? <Redirect to="/" /> : <Login />}
+              </Route>
+              <Route exact path="/registro">
+                {this.state.logueado ? <Redirect to="/" /> : <Registro />}
               </Route>
               <Route exact path="/bicicletas/catalogo">
                 {!this.state.logueado ? <Redirect path="/" /> : <CatalogoBicicletas />}
@@ -67,6 +74,15 @@ class App extends Component {
               </Route>
               <Route exact path="/administrador/rutas">
                 {this.state.isAdmin !== "1" ? <Redirect path="/" /> : <VistaRutas />}
+              </Route>
+              <Route exact path="/administrador/rutas/editar/:idruta">
+                {this.state.isAdmin !== "1" ? <Redirect path="/" /> : <EditarRuta />}
+              </Route>
+              <Route exact path="/administrador/bicicletas">
+                {this.state.isAdmin !== "1" ? <Redirect path="/" /> : <VistaBicicletas />}
+              </Route>
+              <Route exact path="/administrador/bicicletas/agregarImagen/:id">
+                {this.state.isAdmin !== "1" ? <Redirect path="/" /> : <AgregarImagen />}
               </Route>
               {/* Rutas para administradores */}
             </Switch>
